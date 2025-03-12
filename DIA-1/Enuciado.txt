@@ -1,0 +1,124 @@
+# Documentação do Desafio de 30 Dias de Redes
+
+## Introdução
+Após estudar os cursos Cisco necessários, este desafio de 30 dias tem como objetivo reforçar os conhecimentos adquiridos através da criação de laboratórios diários, aumentando a dificuldade progressivamente. O desafio cobre princípios essenciais do exame CCNA, preparando os participantes para aplicações reais.
+
+## Desafio 1 - Configuração Básica de Rede
+
+### Cenário
+A empresa XYZ, localizada na Austrália, está expandindo sua operação para Bonalbo. Como novo engenheiro de redes, seu desafio é projetar e implementar uma rede para a filial, garantindo que atenda aos seguintes requisitos:
+
+### Requisitos da Rede
+- Utilização de **1 roteador e 1 switch Cisco**.
+- Segmentação em **3 VLANs**:
+  - **Admin/IT**
+  - **Finance/HR**
+  - **Customer Service/Reception**
+- Implementação de **redes sem fio** para cada departamento.
+- Configuração de **DHCP** para distribuição automática de IPv4.
+- Todos os dispositivos devem ser capazes de **comunicar-se entre si**.
+- Faixa de endereçamento fornecida pelo ISP: **192.168.1.0/24**.
+
+### Tecnologias Utilizadas
+- Configuração de um roteador e um switch Cisco.
+- Conexão de dispositivos utilizando cabeamento correto.
+- Criação de VLANs e atribuição de portas.
+- Subnetting e endereçamento IP.
+- Roteamento Inter-VLAN (**Router on a Stick**).
+- Configuração de **DHCP Server** no roteador.
+- Implementação de **WLAN** com Cisco Access Point.
+- Configuração de dispositivos host.
+- Teste e verificação da comunicação da rede.
+
+### Configuração Passo a Passo
+
+1. **Configurar VLANs no switch:**
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)# vlan 10
+Switch(config-vlan)# name Admin_IT
+Switch(config-vlan)# exit
+Switch(config)# vlan 20
+Switch(config-vlan)# name Finance_HR
+Switch(config-vlan)# exit
+Switch(config)# vlan 30
+Switch(config-vlan)# name Customer_Service
+Switch(config-vlan)# exit
+```
+
+2. **Atribuir portas para as VLANs:**
+```bash
+Switch(config)# interface FastEthernet0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+Switch(config-if)# exit
+
+Switch(config)# interface FastEthernet0/2
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 20
+Switch(config-if)# exit
+
+Switch(config)# interface FastEthernet0/3
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 30
+Switch(config-if)# exit
+```
+
+3. **Configurar o roteador para Inter-VLAN Routing:**
+```bash
+Router> enable
+Router# configure terminal
+Router(config)# interface GigabitEthernet0/0.10
+Router(config-subif)# encapsulation dot1Q 10
+Router(config-subif)# ip address 192.168.10.1 255.255.255.0
+Router(config-subif)# exit
+
+Router(config)# interface GigabitEthernet0/0.20
+Router(config-subif)# encapsulation dot1Q 20
+Router(config-subif)# ip address 192.168.20.1 255.255.255.0
+Router(config-subif)# exit
+
+Router(config)# interface GigabitEthernet0/0.30
+Router(config-subif)# encapsulation dot1Q 30
+Router(config-subif)# ip address 192.168.30.1 255.255.255.0
+Router(config-subif)# exit
+```
+
+4. **Configurar DHCP no roteador:**
+```bash
+Router(config)# ip dhcp pool VLAN10
+Router(dhcp-config)# network 192.168.10.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.10.1
+Router(dhcp-config)# exit
+
+Router(config)# ip dhcp pool VLAN20
+Router(dhcp-config)# network 192.168.20.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.20.1
+Router(dhcp-config)# exit
+
+Router(config)# ip dhcp pool VLAN30
+Router(dhcp-config)# network 192.168.30.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.30.1
+Router(dhcp-config)# exit
+```
+
+5. **Testar conectividade:**
+```bash
+PC> ipconfig (para verificar o IP atribuído)
+PC> ping 192.168.10.1 (para testar conectividade com o roteador)
+PC> ping 192.168.20.1 (para testar roteamento inter-VLAN)
+```
+
+### Conclusão
+Este primeiro desafio abordou a configuração básica de VLANs, DHCP e roteamento inter-VLAN. Ao longo dos 30 dias, a dificuldade dos desafios aumentará gradualmente, cobrindo mais princípios fundamentais do CCNA.
+
+### Percentual de Cobertura do CCNA
+Este desafio cobre aproximadamente **15%** dos conceitos do exame CCNA, incluindo:
+- Fundamentos de redes.
+- Configuração de VLANs e roteamento inter-VLAN.
+- Implementação de DHCP.
+- Testes e verificação da comunicação entre dispositivos.
+
+Fique atento ao próximo desafio, que trará novos conceitos e configurações avançadas! 🚀
+
